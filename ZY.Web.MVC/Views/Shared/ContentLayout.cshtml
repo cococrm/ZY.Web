@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head {
+    @RenderSection("head", false)
+}
+
+<div class="easyui-layout" data-options="fit:true">
+    @*工具栏*@
+    <div data-options="region:'north',border:false">
+        @RenderSection("top", false)
+    </div>
+    @*主页面*@
+    <div data-options="region:'center',border:false" style="padding:2px">
+        @RenderSection("content")
+    </div>
+</div>
+@section footer{
+    @RenderSection("footer", false)
+}
+
+

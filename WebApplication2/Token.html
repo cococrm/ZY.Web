@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/jquery.json.min.js"></script>
+    <script src="Scripts/jquery.cookie.js"></script>
+    <script>
+        var baseUrl = "http://localhost:16169/";
+        $(function () {
+            var user = {
+                'grant_type': 'password',
+                'username': 'zhangsan',
+                'password': '123123'
+            };
+            $.post(baseUrl + "token", user, function (data) {
+                $.cookie("token", data.access_token);
+            })
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>

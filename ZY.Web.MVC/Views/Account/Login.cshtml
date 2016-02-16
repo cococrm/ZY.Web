@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>登陆</title>
+    <link href="~/Scripts/easyui/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/Scripts/easyui/themes/icon.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="~/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/utils/jquery.util.easyui.js"></script>
+    <script>
+        var baseUrl = "http://localhost:16169/";
+        $(function () {
+            $("#Login-Submit").click(function () {
+                var username = $("#userName").val();
+                var password = $("#password").val();
+                if (username == '' || password == '') {
+                    $.easyui.info("账号或者密码不能为空！");
+                    return;
+                }
+                $.post("Login", { userName: username, password: password }, function (data) {
+                    if (data.Status == "200") {
+                        location.href = "/";
+                    } else {
+                        $.easyui.info(data.Message);
+                    }
+                })
+            })            
+        })
+    </script>
+    <div style="margin:0 auto;width:300px;">
+        <div class="easyui-panel" title="账号登录" data-options="modal:true,iconCls:'Lockgo'" style="width:300px;padding:10px;">
+            <form id="login" action="Login" method="post">
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" id="userName" style="width:100%;height:30px;padding:12px" data-options="prompt:'账号',iconCls:'icon-man',iconWidth:38">
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" id="password" type="password" style="width:100%;height:30px;padding:12px" data-options="prompt:'密码',iconCls:'icon-lock',iconWidth:38">
+                </div>
+                <div>
+                    <a href="javascript:;" id="Login-Submit" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:100%;">
+                        <span style="font-size:14px;">登录</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

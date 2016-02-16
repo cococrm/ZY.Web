@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/jquery.json.min.js"></script>
+    <script src="Scripts/jquery.cookie.js"></script>
+    <script>
+        var baseUrl = "http://localhost:16169/users/";
+        $(function () {
+
+            $("#getList").click(function () {
+                var data = {
+                    PageSize: 10,
+                    PageIndex: 1
+                }
+
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + $.cookie("token"));
+                    },
+                    url: baseUrl + "list",
+                    type: "get",
+                    dataType: "json",
+                    data: data,
+                    success: function (data) {
+                        //$("#userList").html(data);
+                    }
+                })
+            })
+            $("#setUserModule").click(function () {
+                var json = {
+                    UserId: 1,
+                    Modules: [
+                        {
+                            Id: 1,
+                            Operations: [
+                                {
+                                    Id: 1
+                                },
+                                {
+                                    Id: 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + $.cookie("token"));
+                    },
+                    url: baseUrl + "setUserModule",
+                    type: "post",
+                    dataType: "json",
+                    data: json,
+                    success: function (data) {
+                        //$("#userList").html(data);
+                    }
+                })
+            })
+            $("#setUserRole").click(function () {
+                var data = {
+                    userId: 2,
+                    roleIds:[1]
+                }
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + $.cookie("token"));
+                    },
+                    url: baseUrl + "setUserRole",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (data) {
+                        //$("#userList").html(data);
+                    }
+                })
+            })
+
+        })
+    </script>
+</head>
+<body>
+    <input id="getList" type="button" value="查询列表" />
+    <input id="setUserRole" type="button" value="设置角色" />
+    <input id="setUserModule" type="button" value="设置权限" />
+</body>
+</html>

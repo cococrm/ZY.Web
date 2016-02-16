@@ -1,0 +1,52 @@
+﻿@section top{
+    <div class="datagrid-toolbar">
+        @(Html.LinkButton("添加")
+            .Icon("icon-add")
+            .Plain()
+            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',buttons:'dialogButtons',url:'Edit'})"")
+            .Authorize(ModuleCode.SystemUser, OperationCode.Add)
+            .Create()
+        )
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" onclick="$.easyui.treegrid.edit('navigation')">编辑</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'" onclick="$.easyui.treegrid.remove('navigation')">删除</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('navigation')">刷新</a>
+    </div>
+}
+@section content{
+    <table id="datagrid"></table>
+}
+@section footer{
+    <script>
+        var _this = $("#datagrid");
+        $(function () {
+            _this.datagrid({
+                url: $.webApiUrl + "users/list",
+                method: 'get',
+                idField: 'id',
+                fit: true,
+                rownumbers: true,
+                pagination: true,
+                pageSize: 10,
+                columns: [[
+                     { field: 'id', checkbox: true, width: 100 },
+                     { field: 'userName', title: '用户名', width: 150 },
+                     { field: 'nickName', title: '昵称', width: 150 },
+                     { field: 'email', title: '邮箱', width: 200 },
+                     { field: 'phoneNumber', title: '电话号码', width: 200 },
+                     { field: 'createTime', title: '添加时间', width: 200 },
+                ]]
+            });
+            _this.pagination({
+                pageSize: 10,
+                pageList: [5, 10, 15],
+                beforePageText: '第',
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            });
+        });
+    </script>
+}
+
+
+
+

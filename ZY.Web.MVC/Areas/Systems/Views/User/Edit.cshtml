@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit";
+}
+<form id="EditForm" method="post">
+    <div>
+        <label>账号：</label>
+        <input class="easyui-validatebox" type="text" name="userName" required="true" />
+    </div>
+    <div>
+        <label>密码：</label>
+        <input class="easyui-validatebox" type="password" name="userName" required="true" />
+    </div>
+</form>
+<div id="dialogButtons">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="submitForm()">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog("manager_add_panel")'>关闭</a>
+</div>
+
