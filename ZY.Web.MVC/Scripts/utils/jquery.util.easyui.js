@@ -1,7 +1,34 @@
 ﻿(function ($) {
     var $parent = parent.$;
     $.easyui = (function () {
-
+        //全局数据Key
+        var dataKey = "#dataKey";
+        //弹出窗口Key
+        var dialogsKey = "dialogsKey";
+        //添加弹出窗口Id
+        function addDialog(id) {
+            var data = $parent(dataKey).data(dialogsKey);
+            data = data || [];
+            data.push({ id: id });
+            $parent(dataKey).data(dialogsKey, data);
+        }
+        //获取当前弹出窗口Id
+        function getCurrentDialogId() {
+            var data = $parent(dataKey).data(dialogsKey);
+            data = data || [];
+            if (data.length == 0) {
+                return "";
+            }
+            return data[data.length - 1].id;
+        }
+        //移除当前窗口Id
+        function removeCurrentDialogId() {
+            var data = $parent(dataKey).data(dialogsKey);
+            data = data || [];
+            if (data.length != 0) {
+                data.pop();
+            }
+        }
         //获取消息管理器
         function getMessager() {
             return parent.$.messager;
@@ -189,6 +216,20 @@
                     });
                 }
             },
+            setComboxValue:function(obj,data,valueFiled,textFiled){
+                if (!valueFiled)
+                    valueFiled = 'id';
+                if (!textFiled)
+                    textFiled = 'value';
+                var values = [], text = [];
+                $(data).each(function () {
+                    values.push(this[valueFiled]);
+                    text.push(this[textFiled]);
+                });
+                if (data) {
+                    obj.combobox('setValue', values).combobox('setText', text);
+                }
+            },
             dialog: function (options) {
                 ///	<summary>
                 ///	弹出模态窗，解决在Iframe中无法全屏遮罩,
@@ -208,7 +249,7 @@
                     return;
                 var dialog = createDialow();
                 show();
-                //addDialog(options.id);
+                addDialog(options.id);
 
                 //初始化参数
                 function initOptions() {
@@ -256,9 +297,18 @@
                         onClose: function () {
                             if (options.closeCallback)
                                 options.closeCallback();
+                            $parent("#" + options.id).dialog('destroy');
+                            removeCurrentDialogId();
                         }
                     });
                 }
+            },
+            //关闭弹出窗口
+            closeDialog: function (dialogId) {
+                console.log(dialogId);
+                if (!dialogId)
+                    dialogId = getCurrentDialogId();
+                $parent('#' + dialogId).dialog('close');
             },
             info: function (msg, title) {
                 ///	<summary>
@@ -326,14 +376,14 @@
                     },
                     success: function (result) {
                         $.easyui.removeLoading();
-                        try{
-                            if(result.status=="401"){
+                        try {
+                            if (result.status == "401") {
                                 location.href = "/Account/Login";
-                            }else if(result.status=="403"){
+                            } else if (result.status == "403") {
                                 $.easyui.warn("你没有权限操作！");
                                 return;
                             }
-                        }catch(e){
+                        } catch (e) {
 
                         }
                         if (callback)
@@ -344,6 +394,9 @@
                         //$.easyui.warn("Http status: " + xmlHttpRequest.status + " " + xmlHttpRequest.statusText + "\najaxOptions: " + ajaxOptions + "\nerror:" + error + "\n" + xmlHttpRequest.responseText);
                     }
                 })
+            },
+            getJSON: function (url, callback) {
+                $.easyui.ajax(url, null, callback, 'get');
             }
         };
     })();

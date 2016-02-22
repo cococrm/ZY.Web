@@ -49,5 +49,20 @@ namespace ZY.Utils
                 return result;
             return defaultValue;
         }
+        /// <summary>
+        /// string数组转换为int数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static int[] ToInt(this string[] value, int defaultValue = 0)
+        {
+            int[] result = new int[value.Length];
+            for(int i=0;i<value.Length;i++)
+            {
+                result[i] = value[i].ToInt(defaultValue);
+            }
+            return result;
+        }
     }
 }

@@ -14,6 +14,9 @@ namespace ZY.Core.Web.Model
         public AjaxResponse()
             : this("操作成功！")
         { }
+        public AjaxResponse(int Status)
+            : this(Status, "")
+        { }
         public AjaxResponse(string Message)
             : this(AjaxResponseStatus.Success, Message)
         { }

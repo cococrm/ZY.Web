@@ -29,6 +29,7 @@ namespace ZY.WebApi.Controllers
         private readonly UserManager _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILog _log;
+        private readonly string defaultPassword = "******";
 
         public UserController(
             IRepository<User, int> userRepository,
@@ -57,7 +58,68 @@ namespace ZY.WebApi.Controllers
         [HttpGet, Route("list")]
         public IHttpActionResult GetListByPage()
         {
-            return Json(GetPageResult<User>(_userRepository.Entities).ToGridData());
+            return Json(GetPageResult(_userRepository.Entities).ToGridData());
+        }
+
+        /// <summary>
+        /// 根据Id获取账号信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet, Route("get")]
+        public async Task<IHttpActionResult> GetUserById(int id)
+        {
+            var user = await _userRepository.GetByKeyAsync(id);
+            return Json(new
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = defaultPassword,
+                NickName = user.NickName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                Roles = from r in user.Roles
+                        select new
+                        {
+                            roleId = r.RoleId,
+                            roleName = _roleRepository.GetByKey(r.RoleId).Name
+                        }
+            });
+        }
+
+        /// <summary>
+        /// 保存账号
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Route("save")]
+        public async Task<IHttpActionResult> SaveUser(SaveUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new AjaxResponse(AjaxResponseStatus.ValidError, "数据验证错误", ModelState.FirstOrDefault()));
+            }
+            if (model.Id > 0)
+            {
+                var user = await _userRepository.GetByKeyAsync(model.Id);
+                if (user == null)
+                    return Json(new AjaxResponse(AjaxResponseStatus.NotFound));
+
+                if (model.Password != defaultPassword)
+                    user.Password = new PasswordHasher().HashPassword(model.Password);
+                user.UserName = model.UserName;
+                user.NickName = model.NickName;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Email = model.Email;
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    await SetUserRoles(user.Id, model.Roles.Split(",").ToInt());
+                    return Json(new AjaxResponse());
+                }
+                return Json(new AjaxResponse(AjaxResponseStatus.Error, result.Errors.First(), result.Errors));
+            }
+            return Json(new AjaxResponse(AjaxResponseStatus.Success, "添加成功成功", model));
         }
 
         /// <summary>
@@ -66,11 +128,8 @@ namespace ZY.WebApi.Controllers
         /// <param name="userId"></param>
         /// <param name="roleIds"></param>
         /// <returns></returns>
-        [HttpPost, Route("setUserRole")]
-        public async Task<IHttpActionResult> SetUserRoles(SetUserRole model)
+        private async Task SetUserRoles(int userId, int[] roleIds)
         {
-            int userId = model.UserId;
-            int[] roleIds = model.RoleIds;
             //获取当前账号所以角色
             int[] userRoles = _userRoleRepository.Entities.Where(o => o.UserId == userId).Select(o => o.RoleId).ToArray();
             int[] addList = roleIds.Except(userRoles).ToArray();//获取添加
@@ -82,7 +141,6 @@ namespace ZY.WebApi.Controllers
             }
             _userRoleRepository.Remove(o => o.UserId == userId && removeList.Contains(o.RoleId));//删除
             await _unitOfWork.CommitAsync();
-            return Ok(new AjaxResponse());
         }
 
         /// <summary>
@@ -126,10 +184,10 @@ namespace ZY.WebApi.Controllers
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        [HttpPost,Route("delete")]
+        [HttpPost, Route("delete")]
         public async Task<IHttpActionResult> DeleteUser(int[] ids)
         {
-            foreach(int id in ids)
+            foreach (int id in ids)
             {
                 _userRoleRepository.Remove(o => o.UserId == id);
                 _userModuleRepository.Remove(o => o.UserId == id);
@@ -138,6 +196,6 @@ namespace ZY.WebApi.Controllers
             await _unitOfWork.CommitAsync();
             return Json(new AjaxResponse());
         }
-        
+
     }
 }

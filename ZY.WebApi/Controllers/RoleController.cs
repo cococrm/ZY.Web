@@ -11,6 +11,7 @@ using ZY.Identity;
 using ZY.Model;
 using ZY.Core.Web.Model;
 using ZY.WebApi.ViewModels;
+using ZY.Core.Extensions;
 
 namespace ZY.WebApi.Controllers
 {
@@ -44,7 +45,7 @@ namespace ZY.WebApi.Controllers
         [HttpGet, Route("list")]
         public IHttpActionResult GetListByPage()
         {
-            return Json(GetPageResult<Role>(_roleRepository.Entities));
+            return Json(GetPageResult(_roleRepository.Entities, o => new { o.Id, o.Name }).ToGridData());
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace ZY.Web.MVC.Filter
             {
                 filterContext.Result = new JsonResult()
                 {
-                    Data = new AjaxResponse(AjaxResponseStatus.Error, "服务器发生错误，请查看日志", filterContext.Exception.Message),
+                    Data = new AjaxResponse(AjaxResponseStatus.SystemError, "服务器发生错误，请查看日志", filterContext.Exception.Message),
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
                 filterContext.ExceptionHandled = true;

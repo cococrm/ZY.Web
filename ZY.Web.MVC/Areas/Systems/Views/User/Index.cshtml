@@ -3,11 +3,16 @@
         @(Html.LinkButton("添加")
             .Icon("icon-add")
             .Plain()
-            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',buttons:'dialogButtons',url:'Edit'})"")
+            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',width:'320',buttons:'dialogButtons',url:'Systems/User/Add'})")
             .Authorize(ModuleCode.SystemUser, OperationCode.Add)
             .Create()
         )
-        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" onclick="$.easyui.treegrid.edit('navigation')">编辑</a>
+        @(Html.LinkButton("修改")
+            .Icon("icon-edit")
+            .Plain()
+            .Click("$.easyui.grid.editDialog('datagrid',{id:'manager_update_panel',title:'修改管理员',width:'320',buttons:'dialogButtons',url:'Systems/User/Update'})")
+            .Authorize(ModuleCode.SystemUser,OperationCode.Add)
+            .Create())
         <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'" onclick="$.easyui.treegrid.remove('navigation')">删除</a>
         <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('navigation')">刷新</a>
     </div>

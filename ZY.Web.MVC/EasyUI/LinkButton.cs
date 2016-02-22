@@ -71,6 +71,14 @@ namespace ZY.Web.MVC.EasyUI
             }
             return this;
         }
+
+        public override string ToString()
+        {
+            if (tagBuilder == null)
+                return null;
+            return MvcHtmlString.Create(tagBuilder.ToString()).ToHtmlString();
+        }
+
         //创建控件
         public MvcHtmlString Create()
         {

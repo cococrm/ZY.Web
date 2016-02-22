@@ -1827,9 +1827,11 @@
     <Content Include="Scripts\easyui\themes\metro\window.css" />
     <Content Include="Scripts\easyui\themes\mobile.css" />
     <Content Include="Scripts\project.js" />
-    <Content Include="Scripts\utils\jquery.easyui.datagrid.lookup.js" />
+    <Content Include="Scripts\utils\jquery.util.easyui.extension.js" />
+    <Content Include="Scripts\utils\jquery.util.easyui.form.js" />
     <Content Include="Scripts\utils\jquery.util.easyui.grid.js" />
     <Content Include="Scripts\utils\jquery.util.easyui.js" />
+    <Content Include="Scripts\utils\jquery.util.easyui.lookup.js" />
     <Content Include="Scripts\utils\jquery.util.js" />
     <Content Include="Scripts\utils\util.js" />
     <Content Include="Web.config" />

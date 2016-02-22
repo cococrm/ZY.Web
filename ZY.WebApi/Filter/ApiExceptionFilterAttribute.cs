@@ -31,7 +31,7 @@ namespace ZY.WebApi.Filter
             content.AppendFormat("\r\nRequest：{0}", GetRequestValues(request));
             content.AppendFormat("\r\nUrl：{0}", request.Url.AbsoluteUri);
             _log.Error(content.ToString(), actionExecutedContext.Exception);//记录日志
-            string message = JsonHelper.ToJson(new AjaxResponse(AjaxResponseStatus.Error, "服务器发生错误，请查看日志", actionExecutedContext.Exception.Message));
+            string message = JsonHelper.ToJson(new AjaxResponse(AjaxResponseStatus.SystemError, "服务器发生错误，请查看日志", actionExecutedContext.Exception.Message));
             actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(message)

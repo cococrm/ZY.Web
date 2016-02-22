@@ -15,7 +15,7 @@ namespace ZY.Core.Web.Model
         /// <summary>
         /// 系统错误
         /// </summary>
-        public readonly static int Error = 500;
+        public readonly static int SystemError = 500;
         /// <summary>
         /// 未登陆
         /// </summary>
@@ -25,8 +25,16 @@ namespace ZY.Core.Web.Model
         /// </summary>
         public readonly static int NotAuthorized = 403;
         /// <summary>
+        /// 未找到
+        /// </summary>
+        public readonly static int NotFound = 404;
+        /// <summary>
         /// 参数验证错误
         /// </summary>
         public readonly static int ValidError = 100;
+        /// <summary>
+        /// 
+        /// </summary>
+        public readonly static int Error = 0;
     }
 }

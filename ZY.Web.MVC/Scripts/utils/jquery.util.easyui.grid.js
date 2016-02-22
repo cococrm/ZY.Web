@@ -1,4 +1,49 @@
 ﻿(function ($) {
+    //表格操作
+    $.easyui.grid = function () {
+        return {
+            editDialog: function (gridId, options) {
+                var grid = $("#" + gridId);
+                var rows = grid.datagrid('getChecked');
+                if(rows && rows.length>0){
+                    options.url = options.url + "?id=" + rows[0].id;
+                    $.easyui.dialog(options);
+                }else{
+                    $.easyui.warn("请选择待修改的记录！");
+                    return;
+                }
+            },
+            //删除节点
+            remove: function (gridId, url) {
+                var grid = $("#" + gridId);
+                var rows = grid.datagrid('getChecked');
+                var ids = "";
+                if (rows && rows.length > 0) {
+                    for (var i = 0; i < rows.length; i++) {
+                        ids += rows[i].id + "|";
+                    }
+                    $.easyui.ajax(url, { ids: ids }, ajaxCallback);
+                } else {
+                    $.easyui.warn("请选择待删除的记录！");
+                    return;
+                }
+                function ajaxCallback(result) {
+                    if (result.status == 1) {
+                        $.easyui.info(result.msg);
+                        $.easyui.grid.refresh(gridId); //刷新
+                    } else {
+                        $.easyui.warn(result.msg);
+                    }
+                }
+            },
+            //刷新
+            refresh: function (gridId) {
+                var grid = $("#" + gridId);
+                grid.datagrid('reload');
+            }
+        }
+
+    }();
     $.easyui.treegrid = (function () {
         editIndex = undefined;
         return {

@@ -3,18 +3,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Edit";
 }
-<form id="EditForm" method="post">
-    <div>
-        <label>账号：</label>
-        <input class="easyui-validatebox" type="text" name="userName" required="true" />
-    </div>
-    <div>
-        <label>密码：</label>
-        <input class="easyui-validatebox" type="password" name="userName" required="true" />
-    </div>
+<form id="EditForm" method="post" class="form" url="users/save">
+    <dl>
+        <dt>账号：</dt>
+        <dd><input class="easyui-textbox" type="text" name="userName" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>密码：</dt>
+        <dd><input class="easyui-textbox" type="password" name="password" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>昵称：</dt>
+        <dd><input class="easyui-textbox" type="text" name="nickName" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>邮箱：</dt>
+        <dd><input class="easyui-textbox" type="text" name="email" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>电话号码：</dt>
+        <dd><input class="easyui-textbox" type="text" name="phoneNumber" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>角色：</dt>
+        <dd><input id="role" name="roles" type="text" /></dd>
+    </dl>
+    <input type="hidden" name="id" />
 </form>
 <div id="dialogButtons">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="submitForm()">保存</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog("manager_add_panel")'>关闭</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="$.easyui.submit('EditForm')">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog()'>关闭</a>
 </div>
-
+<script>
+    window.opts = {
+        title: '选择角色',
+        method: "get",
+        url: $.webApiUrl + "roles/list",
+        idField: "id",
+        textField: "name",
+        panelWidth: 500,
+        panelHeight: 300,
+        multiple: true,
+        singleSelect: false,
+        pagination: true,
+        pageSize: 20,
+        columns: [[
+            { field: 'id', checkbox: true, width: 100 },
+            { field: 'name', title: '角色名称', width: 150 },
+        ]]
+    };
+    $("#role").lookup($.extend({}, window.opts));
+    var action = "@ViewBag.Action";
+    if (action == "Update") {
+        $.easyui.getJSON("users/get?id=@Request.QueryString["id"]", function (data) {
+            $("#EditForm").form("load", data);
+            $.easyui.setComboxValue($("#role"), data.roles, 'roleId', 'roleName');
+        });
+    }
+</script>

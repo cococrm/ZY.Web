@@ -14,5 +14,17 @@ namespace ZY.Web.MVC.Areas.Systems.Controllers
         {
             return View();
         }
+
+        public ActionResult Add()
+        {
+            ViewBag.Action = "Add";
+            return View("Edit");
+        }
+        
+        public ActionResult Update(int id)
+        {
+            ViewBag.Action = "Update";
+            return View("Edit");
+        }
     }
 }
