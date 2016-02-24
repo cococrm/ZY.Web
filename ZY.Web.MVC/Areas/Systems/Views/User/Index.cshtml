@@ -1,20 +1,21 @@
 ﻿@section top{
     <div class="datagrid-toolbar">
         @(Html.LinkButton("添加")
-            .Icon("icon-add")
-            .Plain()
-            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',width:'320',buttons:'dialogButtons',url:'Systems/User/Add'})")
+            .Options("plain:true,iconCls:'icon-add'")
+            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',width:'320',height:'280',buttons:'dialogButtons',url:'Systems/User/Add'})")
             .Authorize(ModuleCode.SystemUser, OperationCode.Add)
-            .Create()
-        )
-        @(Html.LinkButton("修改")
-            .Icon("icon-edit")
-            .Plain()
-            .Click("$.easyui.grid.editDialog('datagrid',{id:'manager_update_panel',title:'修改管理员',width:'320',buttons:'dialogButtons',url:'Systems/User/Update'})")
-            .Authorize(ModuleCode.SystemUser,OperationCode.Add)
             .Create())
-        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'" onclick="$.easyui.treegrid.remove('navigation')">删除</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('navigation')">刷新</a>
+        @(Html.LinkButton("修改")
+            .Options("plain:true,iconCls:'icon-edit'")
+            .Click("$.easyui.grid.editDialog('datagrid',{id:'manager_update_panel',title:'修改管理员',width:'320',height:'280',buttons:'dialogButtons',url:'Systems/User/Update'})")
+            .Authorize(ModuleCode.SystemUser,OperationCode.Update)
+            .Create())
+        @(Html.LinkButton("删除")
+            .Options("plain:true,iconCls:'icon-cancel'")
+            .Click("$.easyui.grid.remove('datagrid','Systems/User/Delete')")
+            .Authorize(ModuleCode.SystemUser, OperationCode.Delete)
+            .Create())
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.grid.refresh('datagrid')">刷新</a>
     </div>
 }
 @section content{
@@ -40,13 +41,6 @@
                      { field: 'phoneNumber', title: '电话号码', width: 200 },
                      { field: 'createTime', title: '添加时间', width: 200 },
                 ]]
-            });
-            _this.pagination({
-                pageSize: 10,
-                pageList: [5, 10, 15],
-                beforePageText: '第',
-                afterPageText: '页    共 {pages} 页',
-                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
             });
         });
     </script>

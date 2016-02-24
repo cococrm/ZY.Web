@@ -382,6 +382,9 @@
                             } else if (result.status == "403") {
                                 $.easyui.warn("你没有权限操作！");
                                 return;
+                            } else if (result.Status == "500") {
+                                $.easyui.warn(result.Message + "," + result.Data);
+                                return;
                             }
                         } catch (e) {
 
