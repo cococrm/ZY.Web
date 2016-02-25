@@ -110,28 +110,24 @@ namespace ZY.WebApi.Controllers
                 user.NickName = model.NickName;
                 user.PhoneNumber = model.PhoneNumber;
                 user.Email = model.Email;
-                IdentityResult result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    await SetUserRoles(user.Id, model.Roles.Split(",").ToInt());
-                    return Ok();
-                }
-                return Error(AjaxResponseStatus.Error, result.Errors.First(), result.Errors);
+                await _userRepository.UpdateAsync(user);
+                await SetUserRoles(user.Id, model.Roles.Split(",").ToInt());
             }
             else
             {
                 var user = new User()
                 {
-                    UserName = model.UserName,                    
+                    UserName = model.UserName,
+                    Password = new PasswordHasher().HashPassword(model.Password),
                     NickName = model.NickName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email
                 };
                 var result = await _userRepository.InsertAsync(user);
-                await _unitOfWork.CommitAsync();
                 await SetUserRoles(result.Id, model.Roles.Split(",").ToInt());
-                return Ok();
             }
+            await _unitOfWork.CommitAsync();
+            return Ok();
         }
 
         /// <summary>
@@ -152,7 +148,6 @@ namespace ZY.WebApi.Controllers
                 await _userRoleRepository.InsertAsync(entity);
             }
             _userRoleRepository.Remove(o => o.UserId == userId && removeList.Contains(o.RoleId));//删除
-            await _unitOfWork.CommitAsync();
         }
 
         /// <summary>
