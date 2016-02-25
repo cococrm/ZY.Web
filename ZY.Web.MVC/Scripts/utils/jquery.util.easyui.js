@@ -305,7 +305,6 @@
             },
             //关闭弹出窗口
             closeDialog: function (dialogId) {
-                console.log(dialogId);
                 if (!dialogId)
                     dialogId = getCurrentDialogId();
                 $parent('#' + dialogId).dialog('close');
