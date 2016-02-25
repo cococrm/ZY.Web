@@ -4,8 +4,9 @@ using Microsoft.AspNet.Identity;
 
 using ZY.Core.Repositories;
 using ZY.Model;
-using ZY.Utils;
 using System.Linq;
+using ZY.Core.Logging;
+using ZY.Core.Extensions;
 
 namespace ZY.Identity
 {

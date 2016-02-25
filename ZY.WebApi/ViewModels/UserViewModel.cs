@@ -45,6 +45,11 @@ namespace ZY.WebApi.ViewModels
         public string Roles { get; set; }
     }
 
+    public class DeleteViewModel
+    {
+        public int[] Ids { get; set; }
+    }
+
     public class SetUserRole
     {
         public int UserId { get; set; }

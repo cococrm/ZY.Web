@@ -9,11 +9,11 @@ using ZY.Web.MVC.Models;
 using ZY.Core.Web.Model;
 using ZY.Core.Repositories;
 using ZY.Model;
-using ZY.Utils;
 using System.Security.Claims;
 using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
-using System.Net.Http.Formatting;
+using ZY.Core.Json;
+using ZY.Core.Extensions;
 
 namespace ZY.Web.MVC.Controllers
 {

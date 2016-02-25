@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using ZY.Utils;
 using ZY.Model;
+using ZY.Core.Logging;
 
 namespace ZY.Identity
 {

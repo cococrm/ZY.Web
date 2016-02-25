@@ -6,9 +6,8 @@ using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
-
+using ZY.Core.Logging;
 using ZY.Core.Repositories;
-using ZY.Utils;
 
 namespace ZY.Repositories.EntityFramework
 {

@@ -54,12 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ZY.Utils\ZY.Utils.csproj">
-      <Project>{f4e431b9-d6f7-4150-b1f2-0712e2937951}</Project>
-      <Name>ZY.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="log4net.config">
       <SubType>Designer</SubType>
     </None>

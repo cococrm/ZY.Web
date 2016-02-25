@@ -48,13 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\ParamterCheckExtensions.cs" />
-    <Compile Include="Extensions\StringExtension.cs" />
-    <Compile Include="HashHelper.cs" />
-    <Compile Include="Json\JsonHelper.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Logging\Log4NetInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>

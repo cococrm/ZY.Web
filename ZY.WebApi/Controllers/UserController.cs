@@ -8,13 +8,13 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using ZY.Core.Repositories;
-using ZY.Utils;
 using ZY.Identity;
 using ZY.Model;
 using ZY.Core.Web.Model;
 using ZY.WebApi.ViewModels;
 using ZY.WebApi.Filter;
 using ZY.Core.Extensions;
+using ZY.Core.Logging;
 
 namespace ZY.WebApi.Controllers
 {
@@ -95,8 +95,8 @@ namespace ZY.WebApi.Controllers
         [HttpPost, Route("save")]
         public async Task<IHttpActionResult> SaveUser(SaveUserViewModel model)
         {
-            //if (!ModelState.IsValid)
-            //    return ValidError();
+            if (!ModelState.IsValid)
+                return ValidError();
             if (model.Id > 0)
             {
                 var user = await _userRepository.GetByKeyAsync(model.Id);
@@ -192,16 +192,13 @@ namespace ZY.WebApi.Controllers
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost, Route("delete")]
-        public async Task<IHttpActionResult> DeleteUser(int[] ids)
+        public async Task<IHttpActionResult> DeleteUser(DeleteViewModel model)
         {
-            foreach (int id in ids)
-            {
-                _userRoleRepository.Remove(o => o.UserId == id);
-                _userModuleRepository.Remove(o => o.UserId == id);
-                _userRepository.Remove(id);
-            }
+            _userRoleRepository.Remove(o => model.Ids.Contains(o.UserId));
+            _userModuleRepository.Remove(o => model.Ids.Contains(o.UserId));
+            _userRepository.Remove(model.Ids);
             await _unitOfWork.CommitAsync();
-            return Json(new AjaxResponse());
+            return Ok();
         }
 
     }

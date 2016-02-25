@@ -188,6 +188,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Home\Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="EasyUI\EasyUIHtmlExtensions.cs" />
     <Compile Include="EasyUI\LinkButton.cs" />
     <Compile Include="Filter\MvcExceptionAttribute.cs" />
@@ -1843,7 +1844,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Areas\Home\Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Home\Views\Home\Index.cshtml" />
   </ItemGroup>
@@ -1886,6 +1887,7 @@
     <Content Include="Scripts\easyui\demo\tree\tree_data1.json" />
     <Content Include="Scripts\easyui\demo\tree\tree_data2.json" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Scripts\utils\jquery.util.ajax.extension.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZY.Core\ZY.Core.csproj">
@@ -1903,10 +1905,6 @@
     <ProjectReference Include="..\ZY.Repositories.EntityFramework\ZY.Repositories.EntityFramework.csproj">
       <Project>{d0d3f3d7-9dfc-4605-8031-7e585accbb99}</Project>
       <Name>ZY.Repositories.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ZY.Utils\ZY.Utils.csproj">
-      <Project>{f4e431b9-d6f7-4150-b1f2-0712e2937951}</Project>
-      <Name>ZY.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

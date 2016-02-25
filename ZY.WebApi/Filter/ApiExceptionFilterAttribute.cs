@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
-using ZY.Utils;
 using ZY.Core.Web.Model;
 using System.Web;
+using ZY.Core.Logging;
+using ZY.Core.Json;
+using ZY.Core.Web;
 
 namespace ZY.WebApi.Filter
 {
@@ -28,7 +30,7 @@ namespace ZY.WebApi.Filter
             content.AppendFormat("\r\nNavigator：{0}", request.UserAgent);
             content.AppendFormat("\r\nIp：{0}", request.UserHostAddress);
             content.AppendFormat("\r\nUrlReferrer：{0}", request.UrlReferrer != null ? request.UrlReferrer.AbsoluteUri : "");
-            content.AppendFormat("\r\nRequest：{0}", GetRequestValues(request));
+            content.AppendFormat("\r\nRequest：{0}", Utils.GetRequestValues(request));
             content.AppendFormat("\r\nUrl：{0}", request.Url.AbsoluteUri);
             _log.Error(content.ToString(), actionExecutedContext.Exception);//记录日志
             string message = JsonHelper.ToJson(new AjaxResponse(AjaxResponseStatus.SystemError, "服务器发生错误，请查看日志", actionExecutedContext.Exception.Message));
@@ -36,20 +38,6 @@ namespace ZY.WebApi.Filter
             {
                 Content = new StringContent(message)
             };
-            base.OnException(actionExecutedContext);
-        }
-        /// <summary>
-        /// 读取request 的提交内容
-        /// </summary>
-        /// <param name="actionExecutedContext"></param>
-        /// <returns></returns>
-        private string GetRequestValues(HttpRequest request)
-        {
-            if (request.HttpMethod.ToUpper() == "POST")
-            {
-                return request.Form.ToString();
-            }
-            return "";
         }
     }
 }

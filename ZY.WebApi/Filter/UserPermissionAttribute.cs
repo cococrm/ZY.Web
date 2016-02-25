@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using ZY.Core.Web.Model;
 using ZY.Identity;
-using ZY.Utils;
+using ZY.Core.Extensions;
 
 namespace ZY.WebApi.Filter
 {

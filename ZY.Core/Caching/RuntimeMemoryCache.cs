@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Caching;
-using ZY.Utils;
+using ZY.Core.Extensions;
 
 namespace ZY.Core.Caching
 {

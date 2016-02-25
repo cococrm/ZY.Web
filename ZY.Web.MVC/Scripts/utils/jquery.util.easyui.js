@@ -370,24 +370,8 @@
                     data: data,
                     dataType: dataType,
                     cache: false,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + $.cookie("token"));
-                    },
                     success: function (result) {
-                        $.easyui.removeLoading();
-                        try {
-                            if (result.status == "401") {
-                                location.href = "/Account/Login";
-                            } else if (result.status == "403") {
-                                $.easyui.warn("你没有权限操作！");
-                                return;
-                            } else if (result.Status == "500") {
-                                $.easyui.warn(result.Message + "," + result.Data);
-                                return;
-                            }
-                        } catch (e) {
-
-                        }
+                        $.easyui.removeLoading();                        
                         if (callback)
                             callback(result);
                     },

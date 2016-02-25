@@ -12,7 +12,7 @@
             .Create())
         @(Html.LinkButton("删除")
             .Options("plain:true,iconCls:'icon-cancel'")
-            .Click("$.easyui.grid.remove('datagrid','Systems/User/Delete')")
+            .Click("$.easyui.grid.remove('datagrid','users/delete')")
             .Authorize(ModuleCode.SystemUser, OperationCode.Delete)
             .Create())
         <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.grid.refresh('datagrid')">刷新</a>
@@ -32,6 +32,7 @@
                 fit: true,
                 rownumbers: true,
                 pagination: true,
+                singleSelect:true,
                 pageSize: 10,
                 columns: [[
                      { field: 'id', checkbox: true, width: 100 },

@@ -20,10 +20,11 @@
             remove: function (gridId, url) {
                 var grid = $("#" + gridId);
                 var rows = grid.datagrid('getChecked');
-                var ids = "";
+                var ids = [];
                 if (rows && rows.length > 0) {
                     for (var i = 0; i < rows.length; i++) {
-                        ids += rows[i].id + "|";
+                        //ids += rows[i].id + "|";
+                        ids.push(rows[i].id);
                     }
                     $.easyui.ajax(url, { ids: ids }, ajaxCallback);
                 } else {
