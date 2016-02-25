@@ -95,18 +95,17 @@ namespace ZY.WebApi.Controllers
         [HttpPost, Route("save")]
         public async Task<IHttpActionResult> SaveUser(SaveUserViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return Json(new AjaxResponse(AjaxResponseStatus.ValidError, "数据验证错误", ModelState.FirstOrDefault()));
-            }
+            //if (!ModelState.IsValid)
+            //    return ValidError();
             if (model.Id > 0)
             {
                 var user = await _userRepository.GetByKeyAsync(model.Id);
                 if (user == null)
-                    return Json(new AjaxResponse(AjaxResponseStatus.NotFound));
+                    return NotFound();
 
                 if (model.Password != defaultPassword)
                     user.Password = new PasswordHasher().HashPassword(model.Password);
+
                 user.UserName = model.UserName;
                 user.NickName = model.NickName;
                 user.PhoneNumber = model.PhoneNumber;
@@ -115,11 +114,24 @@ namespace ZY.WebApi.Controllers
                 if (result.Succeeded)
                 {
                     await SetUserRoles(user.Id, model.Roles.Split(",").ToInt());
-                    return Json(new AjaxResponse());
+                    return Ok();
                 }
-                return Json(new AjaxResponse(AjaxResponseStatus.Error, result.Errors.First(), result.Errors));
+                return Error(AjaxResponseStatus.Error, result.Errors.First(), result.Errors);
             }
-            return Json(new AjaxResponse(AjaxResponseStatus.Success, "添加成功成功", model));
+            else
+            {
+                var user = new User()
+                {
+                    UserName = model.UserName,                    
+                    NickName = model.NickName,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email
+                };
+                var result = await _userRepository.InsertAsync(user);
+                await _unitOfWork.CommitAsync();
+                await SetUserRoles(result.Id, model.Roles.Split(",").ToInt());
+                return Ok();
+            }
         }
 
         /// <summary>

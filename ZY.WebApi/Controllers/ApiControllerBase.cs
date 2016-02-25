@@ -15,6 +15,7 @@ using ZY.Utils;
 using ZY.Core.Sort;
 using ZY.Core.Extensions;
 using ZY.WebApi.Filter;
+using ZY.Core.Web.Model;
 
 namespace ZY.WebApi.Controllers
 {
@@ -40,6 +41,26 @@ namespace ZY.WebApi.Controllers
                 DateTimeFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss"
             });
             return base.Json<T>(content, serializerSettings, encoding);
+        }
+
+        protected new IHttpActionResult Ok()
+        {
+            return Json(new AjaxResponse());
+        }
+
+        protected new IHttpActionResult NotFound()
+        {
+            return Json(new AjaxResponse(AjaxResponseStatus.NotFound));
+        }
+
+        protected IHttpActionResult ValidError()
+        {
+            return Json(new AjaxResponse(AjaxResponseStatus.ValidError, "数据验证错误", ModelState.FirstOrDefault()));
+        }
+
+        protected IHttpActionResult Error(int status = 0, string message = "", object data = null)
+        {
+            return Json(new AjaxResponse(status, message, data));
         }
 
         #region 基类分页查询
@@ -104,12 +125,10 @@ namespace ZY.WebApi.Controllers
             var datas = result.Data.AsQueryable().Select(selector);
             return new PagedResult<TResult>(pager.PageSize) { Data = datas.ToList(), TotalRecords = result.TotalRecords };
         }
-        #endregion
-
         //获取分页参数对象
         private Pager GetPager()
         {
-            HttpContextBase context= (HttpContextBase)Request.Properties["MS_HttpContext"];
+            HttpContextBase context = (HttpContextBase)Request.Properties["MS_HttpContext"];
             HttpRequestBase request = context.Request;
             Pager pager = new Pager();
             pager.PageNumber = request.Params["page"].ToInt(1);
@@ -141,6 +160,9 @@ namespace ZY.WebApi.Controllers
             }
             return pager;
         }
+        #endregion
+
+
 
     }
 }

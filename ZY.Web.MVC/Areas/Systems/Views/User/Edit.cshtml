@@ -14,24 +14,24 @@
     </dl>
     <dl>
         <dt>昵称：</dt>
-        <dd><input class="easyui-textbox" type="text" name="nickName" required="true" /></dd>
+        <dd><input class="easyui-textbox" type="text" name="nickName" /></dd>
     </dl>
     <dl>
         <dt>邮箱：</dt>
-        <dd><input class="easyui-textbox" type="text" name="email" required="true" /></dd>
+        <dd><input class="easyui-textbox" type="text" name="email"/></dd>
     </dl>
     <dl>
         <dt>电话号码：</dt>
-        <dd><input class="easyui-textbox" type="text" name="phoneNumber" required="true" /></dd>
+        <dd><input class="easyui-textbox" type="text" name="phoneNumber" /></dd>
     </dl>
     <dl>
         <dt>角色：</dt>
         <dd><input id="role" name="roles" type="text" /></dd>
     </dl>
-    <input type="hidden" name="id" />
+    <input type="hidden" name="id" value="0" />
 </form>
 <div id="dialogButtons">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="$.easyui.submit('EditForm')">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="$.easyui.submit('EditForm', '', function () { $.easyui.closeDialog() })">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog()'>关闭</a>
 </div>
 <script>

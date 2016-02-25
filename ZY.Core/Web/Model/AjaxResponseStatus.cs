@@ -33,7 +33,7 @@ namespace ZY.Core.Web.Model
         /// </summary>
         public readonly static int ValidError = 100;
         /// <summary>
-        /// 
+        /// 逻辑错误
         /// </summary>
         public readonly static int Error = 0;
     }

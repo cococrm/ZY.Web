@@ -7,6 +7,9 @@
                 var rows = grid.datagrid('getChecked');
                 if(rows && rows.length>0){
                     options.url = options.url + "?id=" + rows[0].id;
+                    options.closeCallback = function () {
+                        $.easyui.grid.refresh(gridId);
+                    }
                     $.easyui.dialog(options);
                 }else{
                     $.easyui.warn("请选择待修改的记录！");

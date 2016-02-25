@@ -36,6 +36,10 @@
             $.easyui.ajax(form.attr("url"), form.serializeArray(), ajaxCallback);
             //回调
             function ajaxCallback(result) {
+                if (result.status == "100") {
+                    $.easyui.warn(result.messager + "," + result.data);
+                    return;
+                }
                 if (fnSuccess)
                     fnSuccess(result);
             }

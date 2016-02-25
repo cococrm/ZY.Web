@@ -25,32 +25,13 @@ namespace ZY.Web.MVC.EasyUI
             tagBuilder.AddCssClass("easyui-linkbutton");
             tagBuilder.SetInnerText(text);
         }
-        //添加Icon
-        public LinkButton Icon(string icon)
+        /// <summary>
+        /// 添加data-options属性
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public LinkButton Options(string options)
         {
-            var attribute = tagBuilder.Attributes;
-            var options = "";
-            if (attribute.Keys.Contains("data-options"))
-            {
-                options = attribute["data-options"] + ",";
-            }
-
-            options += string.Format("iconCls:'{0}'", icon);
-            tagBuilder.MergeAttribute("data-options", options);
-
-            return this;
-        }
-        //简单效果
-        public LinkButton Plain()
-        {
-            var attribute = tagBuilder.Attributes;
-            var options = "";
-            if (attribute.Keys.Contains("data-options"))
-            {
-                options = attribute["data-options"] + ",";
-            }
-
-            options += "plain:true";
             tagBuilder.MergeAttribute("data-options", options, true);
 
             return this;
