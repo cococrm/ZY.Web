@@ -120,7 +120,10 @@
         pageSize: 10, //datagrid pageSize
         singleSelect: true, //datagrid 单选，多选
         idField: "id", //datagrid主键列 input的值
-        textField: "name"//datagrid返回显示的文本列  input文本显示值
+        textField: "name",//datagrid返回显示的文本列  input文本显示值
+        onLoadSuccess:function(){
+
+        }
     });
 
     $.parser.plugins.push("lookup");

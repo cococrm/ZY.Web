@@ -1896,6 +1896,7 @@
     <Content Include="Scripts\easyui\demo\tree\tree_data2.json" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Scripts\utils\jquery.util.ajax.extension.js" />
+    <Content Include="Scripts\utils\jquery.util.lookup.controls.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZY.Core\ZY.Core.csproj">
