@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form id="EditForm" method="post" class="form" url="users/save">
+    <dl>
+        <dt>父节点：</dt>
+        <dd><input class="easyui-combotree" id="parentId" name="parentId" data-options="url:'sysModules/getComboTree',method:'get'" /></dd>
+    </dl>
+    <dl>
+        <dt>名称：</dt>
+        <dd><input class="easyui-textbox" type="text" name="name" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>编码：</dt>
+        <dd><input class="easyui-textbox" type="text" name="code" required="true" /></dd>
+    </dl>
+    <dl>
+        <dt>Url：</dt>
+        <dd><input class="easyui-textbox" type="text" name="url" /></dd>
+    </dl>
+    <dl>
+        <dt>Icon：</dt>
+        <dd><input class="easyui-textbox" type="text" name="icon" /></dd>
+    </dl>
+    <dl>
+        <dt>是否锁定：</dt>
+        <dd><input class="easyui-switchbutton" id="isLock" type="checkbox" name="isLock" data-options="onText:'true',offText:'false'" /></dd>
+    </dl>
+    <dl>
+        <dt>排序：</dt>
+        <dd><input class="easyui-numberbox" type="text" name="sort" value="99" data-options="min:0,max:1000,required:true" /></dd>
+    </dl>
+    <dl>
+        <dt>备注：</dt>
+        <dd><input class="easyui-textbox" type="text" data-options="multiline:true"  name="remark" style="height:40px;" /></dd>
+    </dl>
+    <input type="hidden" name="id" />
+</form>
+<div id="dialogButtons">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="$.easyui.submit('EditForm', '', function () { $.easyui.closeDialog() })">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog()'>关闭</a>
+</div>
+<script>
+    $(function () {
+        if ("@ViewBag.Action" == "Update") {
+            $.easyui.getJSON("sysModules/get?id=@Request.QueryString["id"]", function (data) {
+                $("#EditForm").form("load", data);
+                $("#parentId").combotree('setValue', data.parentId);
+                $("#isLock").switchbutton("setValue", data.isLock);
+                $("#isLock").switchbutton({
+                    onChange: function (checked) {
+                        $("#isLock").switchbutton("setValue", checked);
+                    }
+                })
+            })
+        }
+    })
+</script>
+

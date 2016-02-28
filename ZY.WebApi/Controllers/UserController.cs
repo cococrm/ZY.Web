@@ -54,8 +54,8 @@ namespace ZY.WebApi.Controllers
         /// </summary>
         /// <param name="pager"></param>
         /// <returns></returns>
-        [UserPermission("SystemUser")]
         [HttpGet, Route("list")]
+        [UserPermission(Module = "SystemUser")]
         public IHttpActionResult GetListByPage()
         {
             return Json(GetPageResult(_userRepository.Entities).ToGridData());
@@ -151,48 +151,12 @@ namespace ZY.WebApi.Controllers
         }
 
         /// <summary>
-        /// 设置用户模块权限
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost, Route("setUserModule")]
-        public async Task<IHttpActionResult> SetUserModules(SetUserModule model)
-        {
-            //获取所有账号模块权限
-            var userModules = await _userModuleRepository.QueryAsync(o => o.UserId == model.UserId);
-            var list = new List<UserModuleMap>();
-            foreach (var module in model.Modules)
-            {
-                foreach (var operation in module.Operations)
-                {
-                    int id = 0;
-                    var entity = userModules.FirstOrDefault(o => o.UserId == model.UserId && o.ModuleId == module.Id && o.OperationId == operation.Id);
-                    if (entity != null)
-                        id = entity.Id;
-                    list.Add(new UserModuleMap()
-                    {
-                        Id = id,
-                        UserId = model.UserId,
-                        ModuleId = module.Id,
-                        OperationId = operation.Id
-                    });
-                }
-            }
-            var addList = list.Except(userModules);//获取新增
-            var delList = userModules.Except(list);//获取删除
-            await _userModuleRepository.InsertAsync(addList);
-            _userModuleRepository.Remove(delList);
-            await _unitOfWork.CommitAsync();
-            return Json(new AjaxResponse());
-        }
-
-        /// <summary>
         /// 批量删除账号
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpPost, Route("delete")]
-        public async Task<IHttpActionResult> DeleteUser(DeleteViewModel model)
+        public async Task<IHttpActionResult> DeleteUser(DeleteUserViewModel model)
         {
             _userRoleRepository.Remove(o => model.Ids.Contains(o.UserId));
             _userModuleRepository.Remove(o => model.Ids.Contains(o.UserId));
@@ -200,6 +164,8 @@ namespace ZY.WebApi.Controllers
             await _unitOfWork.CommitAsync();
             return Ok();
         }
+
+
 
     }
 }

@@ -2,16 +2,20 @@
     //表格操作
     $.easyui.grid = function () {
         return {
+            //添加 弹出窗口
+            addDialog: function (gridId, options) {
+                options.closeCallback = function () { $.easyui.grid.refresh(gridId) };
+                $.easyui.dialog(options);
+            },
+            //编辑 弹出窗口
             editDialog: function (gridId, options) {
                 var grid = $("#" + gridId);
                 var rows = grid.datagrid('getChecked');
-                if(rows && rows.length>0){
+                if (rows && rows.length > 0) {
                     options.url = options.url + "?id=" + rows[0].id;
-                    options.closeCallback = function () {
-                        $.easyui.grid.refresh(gridId);
-                    }
+                    options.closeCallback = function () { $.easyui.grid.refresh(gridId) };
                     $.easyui.dialog(options);
-                }else{
+                } else {
                     $.easyui.warn("请选择待修改的记录！");
                     return;
                 }
@@ -26,17 +30,20 @@
                         //ids += rows[i].id + "|";
                         ids.push(rows[i].id);
                     }
-                    $.easyui.ajax(url, { ids: ids }, ajaxCallback);
+                    $.easyui.confirm("确定删除选择的记录？", function () {
+                        $.easyui.ajax(url, { ids: ids }, ajaxCallback);
+                    })
+
                 } else {
                     $.easyui.warn("请选择待删除的记录！");
                     return;
                 }
                 function ajaxCallback(result) {
-                    if (result.status == 1) {
-                        $.easyui.info(result.msg);
+                    if (result.status == 200) {
+                        //$.easyui.info(result.msg);
                         $.easyui.grid.refresh(gridId); //刷新
                     } else {
-                        $.easyui.warn(result.msg);
+                        $.easyui.warn(result.Message);
                     }
                 }
             },
@@ -51,6 +58,24 @@
     $.easyui.treegrid = (function () {
         editIndex = undefined;
         return {
+            //添加 弹出窗口
+            addDialog: function (gridId, options) {
+                options.closeCallback = function () { $.easyui.treegrid.refresh(gridId) };
+                $.easyui.dialog(options);
+            },
+            //编辑 弹出窗口
+            editDialog: function (gridId, options) {
+                var grid = $("#" + gridId);
+                var rows = grid.treegrid('getChecked');
+                if (rows && rows.length > 0) {
+                    options.url = options.url + "?id=" + rows[0].id;
+                    options.closeCallback = function () { $.easyui.treegrid.refresh(gridId) };
+                    $.easyui.dialog(options);
+                } else {
+                    $.easyui.warn("请选择待修改的记录！");
+                    return;
+                }
+            },
             //判断编辑
             endEditing: function (gridId) {
                 if (editIndex == undefined) {

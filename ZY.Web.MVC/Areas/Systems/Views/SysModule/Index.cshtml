@@ -1,0 +1,54 @@
+﻿@section top{
+    <div class="datagrid-toolbar">
+    @(Html.LinkButton("添加")
+            .Options("plain:true,iconCls:'icon-add'")
+            .Click("$.easyui.treegrid.addDialog('treegrid',{id:'sysmodule_add_panel',title:'添加导航菜单',width:'360',height:'360',buttons:'dialogButtons',url:'Systems/SysModule/Add'})")
+            .Authorize(ModuleCode.SystemModule, OperationCode.Add)
+            .Create())
+    @(Html.LinkButton("修改")
+            .Options("plain:true,iconCls:'icon-edit'")
+            .Click("$.easyui.treegrid.editDialog('treegrid',{id:'sysmodule_update_panel',title:'修改导航菜单',width:'360',height:'360',buttons:'dialogButtons',url:'Systems/SysModule/Update'})")
+            .Authorize(ModuleCode.SystemModule, OperationCode.Update)
+            .Create())
+    @(Html.LinkButton("删除")
+            .Options("plain:true,iconCls:'icon-cancel'")
+            .Click("$.easyui.treegrid.remove('treegrid','sysModules/delete')")
+            .Authorize(ModuleCode.SystemModule, OperationCode.Delete)
+            .Create())
+    <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('treegrid')">刷新</a>
+</div>
+}
+@section content{
+    <table id="treegrid"></table>
+}
+@section footer{
+    <script>
+        $(function () {
+            var _this = $("#treegrid");
+            _this.treegrid({
+                url: 'sysModules/getModules',
+                method: 'get',
+                idField: 'id',
+                rownumbers: 'true',
+                treeField: 'name',
+                columns: [[
+                    { title: '名称', field: 'name', width: 150 },
+                    { title: '编码', field: 'code', width: 150 },
+                    { title: 'Url', field: 'url', width: 200 },
+                    { title: 'Icon', field: 'icon', width: 150 },
+                    {
+                        title: '是否锁定', field: 'isLock', width: 100, formatter: function (value, row, index) {
+                            if (value == true) {
+                                return "是"
+                            }
+                            return "否";
+                        }
+                    },
+                    { title: '排序', field: 'sort', width: 100 },
+                    { title: '添加时间', field: 'createTime', width: 150 },
+                ]]
+            })
+        })
+    </script>
+}
+

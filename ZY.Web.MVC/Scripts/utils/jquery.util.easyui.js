@@ -366,12 +366,11 @@
                 $.easyui.showLoading();
                 $.ajax({
                     type: type,
-                    url: $.webApiUrl + url,
+                    url: url,
                     data: data,
                     dataType: dataType,
                     cache: false,
-                    success: function (result) {
-                        $.easyui.removeLoading();                        
+                    success: function (result) {                    
                         if (callback)
                             callback(result);
                     },

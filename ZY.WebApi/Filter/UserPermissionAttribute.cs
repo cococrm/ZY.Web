@@ -16,6 +16,7 @@ namespace ZY.WebApi.Filter
     /// </summary>
     public class UserPermissionAttribute : AuthorizeAttribute
     {
+        private string operation;
         /// <summary>
         /// 操作模块
         /// </summary>
@@ -23,21 +24,20 @@ namespace ZY.WebApi.Filter
         /// <summary>
         /// 操作类型
         /// </summary>
-        public string Operation { get; set; }
-
-        public UserPermissionAttribute() { }
-
-        public UserPermissionAttribute(string moudle)
-            : this(moudle, OperationCode.Show)
+        public string Operation
         {
-
+            get
+            {
+                if (operation == null)
+                    operation = OperationCode.Show;
+                return operation;
+            }
+            set
+            {
+                operation = value;
+            }
         }
 
-        public UserPermissionAttribute(string moudle, string operation)
-        {
-            this.Module = moudle;
-            this.Operation = operation;
-        }
         //重写验证方法
         public override void OnAuthorization(HttpActionContext actionContext)
         {

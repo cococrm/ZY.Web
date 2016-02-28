@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using ZY.Core.Logging;
 using ZY.Core.Web;
 using ZY.Core.Web.Model;
+using ZY.Web.MVC.Controllers;
 
 namespace ZY.Web.MVC.Filter
 {
@@ -27,7 +28,7 @@ namespace ZY.Web.MVC.Filter
             _log.Error(content.ToString(), filterContext.Exception);//记录日志
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                filterContext.Result = new JsonResult()
+                filterContext.Result = new MyJsonResult()
                 {
                     Data = new AjaxResponse(AjaxResponseStatus.SystemError, "服务器发生错误，请查看日志", filterContext.Exception.Message),
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet

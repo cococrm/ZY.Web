@@ -1,7 +1,6 @@
 ﻿
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Edit";
 }
 <form id="EditForm" method="post" class="form" url="users/save">
     <dl>
@@ -18,7 +17,7 @@
     </dl>
     <dl>
         <dt>邮箱：</dt>
-        <dd><input class="easyui-textbox" type="text" name="email"/></dd>
+        <dd><input class="easyui-textbox" type="text" name="email" /></dd>
     </dl>
     <dl>
         <dt>电话号码：</dt>
@@ -59,8 +58,7 @@
             $("#EditForm").form("load", data);
             $.easyui.setComboxValue($("#role"), data.roles, 'roleId', 'roleName');
         });
-    }else
-    {
+    } else {
         $("input[name='id']").val('0');
     }
 </script>

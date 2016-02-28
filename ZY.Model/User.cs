@@ -12,7 +12,7 @@ namespace ZY.Model
     /// <summary>
     /// 用户
     /// </summary>
-    public class User : EntityBase<int>, IUser<int>,ICreatedTime
+    public class User : EntityBase<int>, IUser<int>, ICreatedTime
     {
         /// <summary>
         /// Username
@@ -58,7 +58,7 @@ namespace ZY.Model
         /// <summary>
         /// 获取或设置 登录锁定UTC时间，在此时间前登录将被锁定
         /// </summary>
-        public DateTime? LockoutEndDateUtc { get; set;}
+        public DateTime? LockoutEndDateUtc { get; set; }
 
         /// <summary>
         /// 获取或设置 是否允许锁定用户
@@ -78,18 +78,18 @@ namespace ZY.Model
         /// <summary>
         /// 获取设置 信息创建时间
         /// </summary>
-        public DateTime CreateTime { get; set; }   
-        
+        public DateTime CreateTime { get; set; }
+
         /// <summary>
         /// 最后登录时间
         /// </summary>
-        public DateTime? LastLoginTime { get; set; }    
+        public DateTime? LastLoginTime { get; set; }
 
         /// <summary>
         /// 登陆次数
         /// </summary>
         public int LoginCount { get; set; }
-        
+
         [ForeignKey("UserId")]
         public virtual ICollection<UserRoleMap> Roles { get; set; }
 

@@ -8,5 +8,9 @@ namespace ZY.Identity
     public static class ModuleCode
     {
         public readonly static string SystemUser = "SystemUser";
+
+        public readonly static string SystemRole = "SystemRole";
+
+        public readonly static string SystemModule = "SystemModule";
     }
 }

@@ -177,6 +177,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
+    <Compile Include="Areas\Systems\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Systems\Controllers\SysModuleController.cs" />
     <Compile Include="Areas\Systems\Controllers\UserController.cs" />
     <Compile Include="Areas\Systems\SystemsAreaRegistration.cs" />
     <Compile Include="Autofac\AuthorizedModule.cs" />
@@ -189,10 +191,12 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Home\Controllers\HomeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\MyJsonResult.cs" />
     <Compile Include="EasyUI\EasyUIHtmlExtensions.cs" />
     <Compile Include="EasyUI\LinkButton.cs" />
     <Compile Include="Filter\MvcExceptionAttribute.cs" />
     <Compile Include="Filter\UserAuthorize.cs" />
+    <Compile Include="Filter\UserPermissionAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1452,6 +1456,7 @@
     <Content Include="Scripts\easyui\demo\window\modalwindow.html" />
     <Content Include="Scripts\easyui\demo\window\windowlayout.html" />
     <Content Include="Scripts\easyui\easyloader.js" />
+    <Content Include="Scripts\easyui\extension\jquery.edatagrid.js" />
     <Content Include="Scripts\easyui\JavaScript.js" />
     <Content Include="Scripts\easyui\jquery.cookie.js" />
     <Content Include="Scripts\easyui\jquery.easyui.min.js" />
@@ -1828,7 +1833,6 @@
     <Content Include="Scripts\easyui\themes\metro\window.css" />
     <Content Include="Scripts\easyui\themes\mobile.css" />
     <Content Include="Scripts\project.js" />
-    <Content Include="Scripts\utils\jquery.util.easyui.extension.js" />
     <Content Include="Scripts\utils\jquery.util.easyui.form.js" />
     <Content Include="Scripts\utils\jquery.util.easyui.grid.js" />
     <Content Include="Scripts\utils\jquery.util.easyui.js" />
@@ -1863,7 +1867,11 @@
     <Content Include="Areas\Systems\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Systems\Views\User\Index.cshtml" />
     <Content Include="Areas\Systems\Views\Web.config" />
-    <Content Include="Areas\Systems\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Systems\Views\User\Form.cshtml" />
+    <Content Include="Areas\Systems\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Systems\Views\SysModule\SetModule.cshtml" />
+    <Content Include="Areas\Systems\Views\SysModule\Index.cshtml" />
+    <Content Include="Areas\Systems\Views\SysModule\Form.cshtml" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\ContentLayout.cshtml" />
     <Content Include="Scripts\easyui\demo\accordion\datagrid_data1.json" />

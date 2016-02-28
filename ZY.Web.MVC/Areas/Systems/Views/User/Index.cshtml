@@ -2,7 +2,7 @@
     <div class="datagrid-toolbar">
         @(Html.LinkButton("添加")
             .Options("plain:true,iconCls:'icon-add'")
-            .Click("$.easyui.dialog({id:'manager_add_panel',title:'添加管理员',width:'320',height:'280',buttons:'dialogButtons',url:'Systems/User/Add'})")
+            .Click("$.easyui.grid.addDialog('datagrid',{id:'manager_add_panel',title:'添加管理员',width:'320',height:'280',buttons:'dialogButtons',url:'Systems/User/Add'})")
             .Authorize(ModuleCode.SystemUser, OperationCode.Add)
             .Create())
         @(Html.LinkButton("修改")
@@ -26,7 +26,7 @@
         var _this = $("#datagrid");
         $(function () {
             _this.datagrid({
-                url: $.webApiUrl + "users/list",
+                url: "users/list",
                 method: 'get',
                 idField: 'id',
                 fit: true,

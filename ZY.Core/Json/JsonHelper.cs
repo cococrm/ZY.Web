@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace ZY.Core.Json
 {
@@ -27,7 +28,12 @@ namespace ZY.Core.Json
                 return "{}";
             IsoDateTimeConverter timeFormat = new IsoDateTimeConverter();
             timeFormat.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            var result = JsonConvert.SerializeObject(target, Formatting.Indented, timeFormat);
+            var result = JsonConvert.SerializeObject(target, Formatting.Indented,
+                new JsonSerializerSettings()
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    Converters = { timeFormat }
+                });
             if (isConvertSingleQuotes)
                 result = result.Replace("\"", "'");
             return result;

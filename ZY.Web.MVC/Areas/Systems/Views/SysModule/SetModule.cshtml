@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="treegrid"></table>
+<div id="dialogButtons">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:88px" onclick="saveRoleModule()">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" style="width:88px" onclick='$.easyui.closeDialog()'>关闭</a>
+</div>
+<script>
+    $(function () {
+        var _this = $("#treegrid");
+        _this.treegrid({
+            url: 'sysModules/getRoleModule?id=@Request.QueryString["id"]',
+            method: 'get',
+            idField: 'id',
+            rownumbers: 'true',
+            treeField: 'name',
+            columns: [[
+                { title: '名称', field: 'name', width: 300 },
+                {
+                    title: '权限', field: 'operations', width: 380, formatter: function (value, row, index) {
+                        if (value.length > 0) {
+                            var html = '';
+                            $(value).each(function () {
+                                var id = row.id + "-" + this.id;
+                                html += '  <input type="checkbox" name="' + id + '" value="' + this.id + '" class="check-box" module="' + row.id + '"  ' + setIsCheck(this.isCheck) + ' /> <lable for="' + id + '" class="check-lable">' + this.name + '</lable>';
+                            })
+                            return html;
+                        }
+                    }
+                },
+                {
+                    title: '全选', field: 'selectAll', width: 100, formatter: function (value, row) {
+                        return '  <input type="checkbox" name="' + row.id + '" class="check-box" onclick="selectAllOperation(\'' + row.id + '\')" /> <lable for="' + row.id + '" class="check-lable">全选</lable>';
+                    }
+                },
+            ]]
+        })
+    })
+    //全选
+    var selectAllOperation = function (name) {
+        $("input[module='" + name + "']").prop('checked', $("input[name='" + name + "']").prop('checked'));
+    }
+    //是否选中
+    var setIsCheck = function (check) {
+        if (check) {
+            return 'checked="true"';
+        }
+        return '';
+    }
+    //保存操作
+    var saveRoleModule = function () {
+        var module = new Array();
+        $("input[type='checkbox'][module]:checked").each(function (i) {
+            var m = {
+                id: $(this).attr("module"),
+                operation: $(this).val()
+            }
+            module[i] = m;
+        })
+        $.easyui.ajax("sysModules/saveRoleModule", { id: '@Request.QueryString["id"]', module: module }, function () { $.easyui.closeDialog() });
+    }
+</script>
