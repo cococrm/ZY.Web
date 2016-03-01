@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form id="EditForm" method="post" class="form" url="users/save">
@@ -25,7 +24,7 @@
     </dl>
     <dl>
         <dt>角色：</dt>
-        <dd><input class="easyui-combobox"  id="role" name="roles" type="text" /></dd>
+        <dd><input id="role" name="roles" type="text" /></dd>
     </dl>
     <input type="hidden" name="id" />
 </form>
@@ -37,11 +36,8 @@
     if ("@ViewBag.Action" == "Update") {
         $.easyui.getJSON("users/get?id=@Request.QueryString["id"]", function (data) {
             $("#EditForm").form("load", data);
-            $.easyui.lookupControl.role("role", {
-                onLoadSuccess: function () {
-                    $.easyui.setComboxValue($("#role"), data.roles, 'roleId', 'roleName');
-                }
-            });
+            $.easyui.lookupControl.role("role");
+            $.easyui.setComboxValue($("#role"), data.roles, 'roleId', 'roleName');
         });
     } else {
         $.easyui.lookupControl.role("role");

@@ -3,6 +3,7 @@
         var state = $.data(target, "lookup");
         opts = state.options;
         t = $(target).combobox($.extend({}, opts, {
+            url:'',
             onClickButton: function () {
                 t.combobox("panel").hide();
                 var dialogId = $.newGuid();
@@ -29,15 +30,15 @@
                         }
                     }
                 });
-                if (opts.pagination) {
-                    grid.pagination({
-                        pageSize: opts.pageSize,
-                        pageList: [5, 10, 15],
-                        beforePageText: '第',
-                        afterPageText: '页    共 {pages} 页',
-                        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
-                    });
-                }
+                //if (opts.pagination) {
+                //    grid.pagination({
+                //        pageSize: opts.pageSize,
+                //        pageList: [1, 10, 15],
+                //        beforePageText: '第',
+                //        afterPageText: '页    共 {pages} 页',
+                //        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+                //    });
+                //}
                 dialog.dialog({
                     title: opts.title,
                     iconCls: opts.icon,
@@ -120,10 +121,7 @@
         pageSize: 10, //datagrid pageSize
         singleSelect: true, //datagrid 单选，多选
         idField: "id", //datagrid主键列 input的值
-        textField: "name",//datagrid返回显示的文本列  input文本显示值
-        onLoadSuccess:function(){
-
-        }
+        textField: "name"//datagrid返回显示的文本列  input文本显示值
     });
 
     $.parser.plugins.push("lookup");

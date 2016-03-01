@@ -2,9 +2,9 @@
 	$.easyui.lookupControl = function () {
 		return {
 			role: function (id, options) {
-				var lookup = $("#" + id);
+				var _lookup = $("#" + id);
 				initOptions();
-				lookup.lookup(options);
+				_lookup.lookup(options);
 				function initOptions() {
 					options = $.extend({
 						title: '选择角色',
@@ -21,11 +21,7 @@
 						columns: [[
 							{ field: 'id', checkbox: true, width: 100 },
 							{ field: 'name', title: '角色名称', width: 150 },
-						]],
-						onLoadSuccess: function () {
-							if (options.onLoadSuccess)
-								options.onLoadSuccess();
-						}
+						]]
 					}, options || {});
 				}
 			}
