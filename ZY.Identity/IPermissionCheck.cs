@@ -18,7 +18,7 @@ namespace ZY.Identity
         /// <param name="moudle"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        Task<bool> IsGrantedAsync(int userId, string moudle, string operation);
+        Task<bool> IsGrantedAsync(string moudle, string operation);
         /// <summary>
         /// 
         /// </summary>
@@ -26,6 +26,6 @@ namespace ZY.Identity
         /// <param name="moudle"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        bool IsGranted(int userId, string moudle, string operation);
+        bool IsGranted(string moudle, string operation);
     }
 }

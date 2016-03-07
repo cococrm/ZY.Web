@@ -177,6 +177,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
+    <Compile Include="Areas\Systems\Controllers\OperationController.cs" />
     <Compile Include="Areas\Systems\Controllers\RoleController.cs" />
     <Compile Include="Areas\Systems\Controllers\SysModuleController.cs" />
     <Compile Include="Areas\Systems\Controllers\UserController.cs" />
@@ -1872,6 +1873,7 @@
     <Content Include="Areas\Systems\Views\SysModule\SetModule.cshtml" />
     <Content Include="Areas\Systems\Views\SysModule\Index.cshtml" />
     <Content Include="Areas\Systems\Views\SysModule\Form.cshtml" />
+    <Content Include="Areas\Systems\Views\Operation\Index.cshtml" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\ContentLayout.cshtml" />
     <Content Include="Scripts\easyui\demo\accordion\datagrid_data1.json" />
@@ -1897,6 +1899,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Scripts\utils\jquery.util.ajax.extension.js" />
     <Content Include="Scripts\utils\jquery.util.lookup.controls.js" />
+    <Content Include="Views\Error\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZY.Core\ZY.Core.csproj">

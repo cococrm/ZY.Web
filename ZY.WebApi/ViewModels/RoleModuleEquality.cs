@@ -22,4 +22,19 @@ namespace ZY.WebApi.ViewModels
             return obj.ToString().GetHashCode();
         }
     }
+
+    public class UserModuleEquality : IEqualityComparer<UserModuleMap>
+    {
+        public bool Equals(UserModuleMap one, UserModuleMap two)
+        {
+            return (one.ModuleId == two.ModuleId && one.OperationId == two.OperationId && one.UserId == two.UserId);
+        }
+
+        public int GetHashCode(UserModuleMap obj)
+        {
+            if (obj == null)
+                return 0;
+            return obj.ToString().GetHashCode();
+        }
+    }
 }

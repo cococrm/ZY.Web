@@ -7,7 +7,7 @@ using System.ComponentModel;
 using ZY.Core.Page;
 using ZY.Core.Extensions;
 using ZY.Core.Sort;
-
+using ZY.Core.Web;
 
 namespace ZY.Core.Tests
 {
@@ -60,5 +60,6 @@ namespace ZY.Core.Tests
             Assert.AreEqual(null, query.Single(o => o.Age == 2));
 
         }
+
     }
 }

@@ -15,6 +15,11 @@
             .Click("$.easyui.grid.remove('datagrid','users/delete')")
             .Authorize(ModuleCode.SystemUser, OperationCode.Delete)
             .Create())
+        @(Html.LinkButton("设置权限")
+            .Options("plain:true,iconCls:'icon-lock_edit'")
+            .Click("$.easyui.grid.editDialog('datagrid',{id:'manager_update_panel',title:'设置管理员权限',width:'900',height:'500',buttons:'dialogButtons',url:'/Systems/SysModule/UserModule'})")
+            .Authorize(ModuleCode.SystemRole, OperationCode.Delete)
+            .Create())
         <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.grid.refresh('datagrid')">刷新</a>
     </div>
 }

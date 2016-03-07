@@ -41,7 +41,6 @@ namespace ZY.WebApi.Filter
         //重写验证方法
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            //base.OnAuthorization(actionContext);
             //检查是否登陆
             if (!base.IsAuthorized(actionContext))
             {
@@ -55,38 +54,13 @@ namespace ZY.WebApi.Filter
                 return;
             }
 
-            //获取当前账号Id
-            var userId = ClaimsUser.UserId;
-            var permissionCheck = IocManager.Resolve<IPermissionCheck>(new AuthorizedModule());
-            if (!permissionCheck.IsGranted(userId, Module, Operation))
+            //判断权限
+            if (!UserAuthorize.IsAuthorized(Module, Operation))
             {
                 var message = new AjaxResponse(AjaxResponseStatus.NotAuthorized, "你没有权限操作！");
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.OK, message, "application/json");
                 return;
             }
         }
-
-        ///// <summary>
-        ///// 权限验证
-        ///// </summary>
-        ///// <param name="actionContext"></param>
-        ///// <returns></returns>
-        //protected override bool IsAuthorized(HttpActionContext actionContext)
-        //{            
-        //    if (!base.IsAuthorized(actionContext))
-        //        return false;
-        //    try
-        //    {
-        //        //获取当前账号Id
-        //        var userId = ClaimsUser.UserId;
-        //        var permissionCheck = IocManager.Resolve<IPermissionCheck>(new AuthorizedModule());
-        //        return permissionCheck.IsGranted(userId, Module, Operation);
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //        throw new Exception();
-        //    }
-        //}
     }
 }

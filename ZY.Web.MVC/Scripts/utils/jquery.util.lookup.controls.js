@@ -1,4 +1,5 @@
 ﻿(function ($) {
+    //角色查找带回控件
 	$.easyui.lookupControl = function () {
 		return {
 			role: function (id, options) {

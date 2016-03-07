@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+using System.Configuration;
 
 namespace ZY.Core.Web
 {
@@ -21,6 +18,19 @@ namespace ZY.Core.Web
                 return request.Form.ToString();
             }
             return request.QueryString.ToString();
+        }
+
+        /// <summary>
+        /// 获取webconfig值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetConfigValue(string key)
+        {
+            var value = ConfigurationManager.AppSettings[key];
+            if (value == null)
+                throw new ArgumentNullException(string.Format("config key:{0} is null", key));
+            return value;
         }
     }
 }

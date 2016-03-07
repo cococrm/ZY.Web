@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form id="EditForm" method="post" class="form" url="users/save">
+<form id="EditForm" method="post" class="form" url="sysModules/save">
     <dl>
         <dt>父节点：</dt>
         <dd><input class="easyui-combotree" id="parentId" name="parentId" data-options="url:'sysModules/getComboTree',method:'get'" /></dd>
@@ -46,13 +46,19 @@
             $.easyui.getJSON("sysModules/get?id=@Request.QueryString["id"]", function (data) {
                 $("#EditForm").form("load", data);
                 $("#parentId").combotree('setValue', data.parentId);
-                $("#isLock").switchbutton("setValue", data.isLock);
                 $("#isLock").switchbutton({
                     onChange: function (checked) {
                         $("#isLock").switchbutton("setValue", checked);
                     }
                 })
+                if (data.isLock) {
+                    $("#isLock").switchbutton("check");
+                } else {
+                    $("#isLock").switchbutton("uncheck");
+                }
             })
+        }else{
+            $("input[name='id']").val($.newGuid());
         }
     })
 </script>

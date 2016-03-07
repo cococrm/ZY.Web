@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Threading.Tasks;
 using ZY.Core.Repositories;
 using ZY.Identity;
 using ZY.Model;
-using ZY.Core.Web.Model;
 using ZY.WebApi.ViewModels;
 using ZY.Core.Extensions;
 using ZY.Core.Logging;

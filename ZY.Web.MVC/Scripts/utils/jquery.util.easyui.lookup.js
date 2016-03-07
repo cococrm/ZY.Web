@@ -1,4 +1,5 @@
 ﻿(function ($) {
+    //查找带回控件
     function create(target) {
         var state = $.data(target, "lookup");
         opts = state.options;

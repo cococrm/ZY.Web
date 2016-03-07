@@ -18,7 +18,7 @@ namespace ZY.Identity
             get
             {
                 var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
-                if(claimsPrincipal==null)
+                if (claimsPrincipal == null)
                 {
                     return 0;
                 }
@@ -42,6 +42,40 @@ namespace ZY.Identity
                 }
 
                 return userId;
+            }
+        }
+        /// <summary>
+        /// 是否超级管理员
+        /// </summary>
+        public static bool IsSuperManager
+        {
+            get
+            {
+                var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
+                if (claimsPrincipal == null)
+                {
+                    return false;
+                }
+
+                var claimsIdentity = claimsPrincipal.Identity as ClaimsIdentity;
+                if (claimsIdentity == null)
+                {
+                    return false;
+                }
+
+                var userIdClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData);
+                if (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value))
+                {
+                    return false;
+                }
+
+                bool isSuperManager;
+                if (!bool.TryParse(userIdClaim.Value, out isSuperManager))
+                {
+                    return false;
+                }
+
+                return isSuperManager;
             }
         }
     }

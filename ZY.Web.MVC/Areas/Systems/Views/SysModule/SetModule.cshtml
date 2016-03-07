@@ -11,10 +11,11 @@
     $(function () {
         var _this = $("#treegrid");
         _this.treegrid({
-            url: 'sysModules/getRoleModule?id=@Request.QueryString["id"]',
+            url: '@ViewBag.getUrl',
             method: 'get',
             idField: 'id',
             rownumbers: 'true',
+            fit: true,
             treeField: 'name',
             columns: [[
                 { title: '名称', field: 'name', width: 300 },
@@ -59,6 +60,6 @@
             }
             module[i] = m;
         })
-        $.easyui.ajax("sysModules/saveRoleModule", { id: '@Request.QueryString["id"]', module: module }, function () { $.easyui.closeDialog() });
+        $.easyui.ajax("@ViewBag.saveUrl", { id: '@Request.QueryString["id"]', module: module }, function () { $.easyui.closeDialog() });
     }
 </script>

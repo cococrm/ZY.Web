@@ -258,6 +258,7 @@
                         title: '',
                         url: '',
                         icon: '',
+                        buttons: 'dialogButtons',
                         width: 800,
                         height: 360,
                         closed: false,

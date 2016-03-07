@@ -48,17 +48,16 @@ namespace ZY.Identity
         /// <param name="moudle">模块Code</param>
         /// <param name="operation">操作Code</param>
         /// <returns></returns>
-        public async Task<bool> IsGrantedAsync(int userId, string moudle, string operation)
+        public async Task<bool> IsGrantedAsync(string moudle, string operation)
         {
             //获取当前登录账号信息
-            var user = await _userRepository.GetByKeyAsync(userId);
-            if (user == null)
+            if (ClaimsUser.UserId <= 0)
                 return false;
             //超级管理员拥有全部权限
-            if (user.IsSuperManager)
+            if (ClaimsUser.IsSuperManager)
                 return true;
             //获取权限列表
-            var userPermission = await GetUserPermissionCacheItem(userId);
+            var userPermission = await GetUserPermissionCacheItem(ClaimsUser.UserId);
             //判断权限
             return userPermission.UserPermissions.Exists(o => o.Module == moudle && o.Operation == operation);
         }
@@ -69,9 +68,9 @@ namespace ZY.Identity
         /// <param name="moudle"></param>
         /// <param name="operation"></param>
         /// <returns></returns>
-        public bool IsGranted(int userId, string moudle, string operation)
+        public bool IsGranted(string moudle, string operation)
         {
-            return AsyncHelper.RunAsync(() => IsGrantedAsync(userId, moudle, operation));
+            return AsyncHelper.RunAsync(() => IsGrantedAsync(moudle, operation));
         }
 
         /// <summary>

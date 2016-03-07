@@ -1,4 +1,5 @@
 ﻿(function ($) {
+    //ajax请求扩展，错误统一处理
     var _ajax = $.ajax;
     $.ajax = function (opt) {
         var url = $.webApiUrl + opt.url;

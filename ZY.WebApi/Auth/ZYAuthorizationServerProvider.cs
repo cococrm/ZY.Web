@@ -52,6 +52,7 @@ namespace ZY.WebApi
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));//账号登陆名称
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()));//账号Id
+                identity.AddClaim(new Claim(ClaimTypes.UserData, result.User.IsSuperManager.ToString()));//是否超级管理员
                 identity.AddClaim(new Claim("sub", context.UserName));
 
                 var props = new AuthenticationProperties(new Dictionary<string, string>

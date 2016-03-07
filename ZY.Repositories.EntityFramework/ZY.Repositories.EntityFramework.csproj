@@ -53,6 +53,7 @@
     <Compile Include="Configurations\OperationConfiguration.cs" />
     <Compile Include="Configurations\ModuleOperationMapConfiguration.cs" />
     <Compile Include="Configurations\RoleModuleMapConfiguration.cs" />
+    <Compile Include="Configurations\UserLogConfiguration.cs" />
     <Compile Include="Configurations\UserModuleMapConfiguration.cs" />
     <Compile Include="Configurations\RoleConfiguration.cs" />
     <Compile Include="Configurations\SysMoudleConfiguration.cs" />

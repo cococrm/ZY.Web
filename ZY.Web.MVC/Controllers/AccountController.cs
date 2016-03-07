@@ -14,6 +14,7 @@ using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
 using ZY.Core.Json;
 using ZY.Core.Extensions;
+using ZY.Core.Web;
 
 namespace ZY.Web.MVC.Controllers
 {
@@ -81,7 +82,7 @@ namespace ZY.Web.MVC.Controllers
             paramters.Add("grant_type", "password");
             paramters.Add("username", userName);
             paramters.Add("password", password);
-            HttpResponseMessage response = await client.PostAsync("http://localhost:16169/token", new FormUrlEncodedContent(paramters));
+            HttpResponseMessage response = await client.PostAsync(Utils.GetConfigValue("WebApiUrl")+"token", new FormUrlEncodedContent(paramters));
             var jsonRes = await response.Content.ReadAsStringAsync();
             OAuthToken token = JsonHelper.ToObject<OAuthToken>(jsonRes);
             return token;
@@ -95,6 +96,7 @@ namespace ZY.Web.MVC.Controllers
             var identity = new ClaimsIdentity("ApplicationCookie");
             identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));//账号登陆名称
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));//账号Id
+            identity.AddClaim(new Claim(ClaimTypes.UserData, user.IsSuperManager.ToString()));//是否超级管理员
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(identity);
         }

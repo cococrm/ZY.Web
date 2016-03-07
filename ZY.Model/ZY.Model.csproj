@@ -45,9 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionLog.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="ModuleOperacionMap.cs" />
     <Compile Include="RoleModuleMap.cs" />
+    <Compile Include="UserLog.cs" />
     <Compile Include="UserModuleMap.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="SysModule.cs" />

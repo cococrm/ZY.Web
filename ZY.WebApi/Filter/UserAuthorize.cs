@@ -1,8 +1,8 @@
 ﻿using ZY.Core.Autofac;
 using ZY.Identity;
-using ZY.Web.MVC.Autofac;
+using ZY.WebApi.Autofac;
 
-namespace ZY.Web.MVC.Filter
+namespace ZY.WebApi.Filter
 {
     public class UserAuthorize
     {

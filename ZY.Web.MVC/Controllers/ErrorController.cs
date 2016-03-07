@@ -13,5 +13,10 @@ namespace ZY.Web.MVC.Controllers
         {
             return View("Error");
         }
+
+        public ActionResult NotAuthorized()
+        {
+            return View("");
+        }
     }
 }

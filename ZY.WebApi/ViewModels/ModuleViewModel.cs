@@ -7,37 +7,31 @@ using System.Threading.Tasks;
 
 namespace ZY.WebApi.ViewModels
 {
-    public class SetModuleOperationViewModel
-    {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "_parentId", NullValueHandling = NullValueHandling.Ignore)]
-        public string ParentId { get; set; }
-
-        public IList<OperationViewModel> Operations { get; set; }
-
-        public string selectAll { get; set; }
-    }
-
-    public class OperationViewModel
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public bool IsCheck { get; set; }
-
-    }
-
-    public class SaveModuleOperationViewModel
+    /// <summary>
+    /// 保存角色权限
+    /// </summary>
+    public class SaveRoleModuleOperationViewModel
     {
         public int Id { get; set; }
 
         public IList<ModuleOperationViewModel> Module { get; set; }
 
-        public SaveModuleOperationViewModel()
+        public SaveRoleModuleOperationViewModel()
+        {
+            this.Module = new List<ModuleOperationViewModel>();
+        }
+
+    }
+    /// <summary>
+    /// 保存账号权限
+    /// </summary>
+    public class SaveUserModuleOperationViewModel
+    {
+        public int Id { get; set; }
+
+        public IList<ModuleOperationViewModel> Module { get; set; }
+
+        public SaveUserModuleOperationViewModel()
         {
             this.Module = new List<ModuleOperationViewModel>();
         }

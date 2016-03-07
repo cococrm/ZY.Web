@@ -1,22 +1,27 @@
 ﻿@section top{
     <div class="datagrid-toolbar">
-    @(Html.LinkButton("添加")
+        @(Html.LinkButton("添加")
             .Options("plain:true,iconCls:'icon-add'")
             .Click("$.easyui.treegrid.addDialog('treegrid',{id:'sysmodule_add_panel',title:'添加导航菜单',width:'360',height:'360',buttons:'dialogButtons',url:'Systems/SysModule/Add'})")
             .Authorize(ModuleCode.SystemModule, OperationCode.Add)
             .Create())
-    @(Html.LinkButton("修改")
+        @(Html.LinkButton("修改")
             .Options("plain:true,iconCls:'icon-edit'")
             .Click("$.easyui.treegrid.editDialog('treegrid',{id:'sysmodule_update_panel',title:'修改导航菜单',width:'360',height:'360',buttons:'dialogButtons',url:'Systems/SysModule/Update'})")
             .Authorize(ModuleCode.SystemModule, OperationCode.Update)
             .Create())
-    @(Html.LinkButton("删除")
+        @(Html.LinkButton("删除")
             .Options("plain:true,iconCls:'icon-cancel'")
             .Click("$.easyui.treegrid.remove('treegrid','sysModules/delete')")
             .Authorize(ModuleCode.SystemModule, OperationCode.Delete)
             .Create())
-    <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('treegrid')">刷新</a>
-</div>
+        @(Html.LinkButton("设置按钮")
+            .Options("plain:true,iconCls:'icon-edit'")
+            .Click("$.easyui.treegrid.editDialog('treegrid',{id:'sysmodule_update_panel',title:'设置菜单按钮',width:'600',height:'360',url:'Systems/Operation/',closeCallback:'none'})")
+            .Authorize(ModuleCode.SystemModule, OperationCode.Update)
+            .Create())
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="$.easyui.treegrid.refresh('treegrid')">刷新</a>
+    </div>
 }
 @section content{
     <table id="treegrid"></table>
@@ -29,7 +34,8 @@
                 url: 'sysModules/getModules',
                 method: 'get',
                 idField: 'id',
-                rownumbers: 'true',
+                rownumbers: true,
+                fit: true,
                 treeField: 'name',
                 columns: [[
                     { title: '名称', field: 'name', width: 150 },

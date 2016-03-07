@@ -13,7 +13,11 @@
                 var rows = grid.datagrid('getChecked');
                 if (rows && rows.length > 0) {
                     options.url = options.url + "?id=" + rows[0].id;
-                    options.closeCallback = function () { $.easyui.grid.refresh(gridId) };
+                    if (options.closeCallback == 'none') {
+                        options.closeCallback = function () { $.easyui.grid.refresh(gridId) };
+                    } else {
+                        options.closeCallback = null;
+                    }
                     $.easyui.dialog(options);
                 } else {
                     $.easyui.warn("请选择待修改的记录！");
@@ -27,7 +31,6 @@
                 var ids = [];
                 if (rows && rows.length > 0) {
                     for (var i = 0; i < rows.length; i++) {
-                        //ids += rows[i].id + "|";
                         ids.push(rows[i].id);
                     }
                     $.easyui.confirm("确定删除选择的记录？", function () {
@@ -40,7 +43,6 @@
                 }
                 function ajaxCallback(result) {
                     if (result.status == 200) {
-                        //$.easyui.info(result.msg);
                         $.easyui.grid.refresh(gridId); //刷新
                     } else {
                         $.easyui.warn(result.Message);
@@ -69,7 +71,11 @@
                 var rows = grid.treegrid('getChecked');
                 if (rows && rows.length > 0) {
                     options.url = options.url + "?id=" + rows[0].id;
-                    options.closeCallback = function () { $.easyui.treegrid.refresh(gridId) };
+                    if (options.closeCallback != 'none') {
+                        options.closeCallback = function () { $.easyui.treegrid.refresh(gridId) };
+                    } else {
+                        options.closeCallback = null;
+                    }
                     $.easyui.dialog(options);
                 } else {
                     $.easyui.warn("请选择待修改的记录！");
@@ -91,16 +97,10 @@
                 }
             },
             //添加并编辑
-            addRow: function (gridId, url) {
+            addRow: function (gridId) {
                 if ($.easyui.treegrid.endEditing(gridId)) {
                     var grid = $("#" + gridId);
-                    //var row= { ID: $.newGuid('-'), MenuName: "", MenuCode: "", ParentId: $.newEmptyGuid(), SortId: 99, isNewRecord: true };
-                    $.getJSON(url, function (row) {
-                        grid.treegrid('append', { parent: '', data: [row] });
-                        grid.treegrid('select', row.ID);
-                        grid.data("datagrid").insertedRows.push(row);
-                        $.easyui.treegrid.edit(gridId);
-                    });
+                    grid.treegrid('appendRow')
                 }
             },
             //编辑行
@@ -129,14 +129,23 @@
                 editIndex = undefined;
             },
             //删除节点
-            remove: function (gridId) {
+            remove: function (gridId, url) {
                 var grid = $("#" + gridId);
-                var row = grid.treegrid('getSelected');
-                if (!row) {
+                var rows = grid.treegrid('getSelected');
+                if (!rows) {
                     $.easyui.warn("请选择待删除的记录！");
                     return;
                 }
-                grid.treegrid('remove', row.ID);
+                $.easyui.confirm("确定删除选择的记录？", function () {
+                    $.easyui.ajax(url, { '' : rows.id }, ajaxCallback);
+                })
+                function ajaxCallback(result) {
+                    if (result.Status == 200) {
+                        $.easyui.treegrid.refresh(gridId); //刷新
+                    } else {
+                        $.easyui.warn(result.Message);
+                    }
+                }
             },
             //刷新
             refresh: function (gridId) {

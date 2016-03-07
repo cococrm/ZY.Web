@@ -22,7 +22,8 @@ namespace ZY.WebApi.Controllers
         private readonly IRepository<SysModule, Guid> _moduleRepository;
         private readonly IRepository<ModuleOperationMap, int> _moduleOperationRepository;
         private readonly IRepository<Operation, int> _operationRepository;
-        private readonly IRepository<RoleModuleMap, int> _roleModuleRrpository;
+        private readonly IRepository<RoleModuleMap, int> _roleModuleRepository;
+        private readonly IRepository<UserModuleMap, int> _userModuleRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILog _log;
 
@@ -31,13 +32,15 @@ namespace ZY.WebApi.Controllers
             IRepository<ModuleOperationMap, int> moduleOperationRepository,
             IRepository<Operation, int> operationRepository,
             IRepository<RoleModuleMap, int> roleModuleRepository,
+            IRepository<UserModuleMap, int> userModuleRepository,
             IUnitOfWork unitOfWork
             )
         {
             this._moduleRepository = moduleRepository;
             this._moduleOperationRepository = moduleOperationRepository;
             this._operationRepository = operationRepository;
-            this._roleModuleRrpository = roleModuleRepository;
+            this._roleModuleRepository = roleModuleRepository;
+            this._userModuleRepository = userModuleRepository;
             this._unitOfWork = unitOfWork;
             _log = new Log();
         }
@@ -54,6 +57,7 @@ namespace ZY.WebApi.Controllers
             var parents = _list.Where(o => o.ParentId.Equals(Guid.Empty));
             foreach (var model in parents)
             {
+                if (!UserAuthorize.IsAuthorized(model.Code, OperationCode.Show)) continue; //判断权限
                 TreeNode node = new TreeNode();
                 node.Id = model.Id;
                 node.Text = model.Name;
@@ -128,16 +132,58 @@ namespace ZY.WebApi.Controllers
         [HttpGet, Route("getRoleModule")]
         public async Task<IHttpActionResult> GetRoleModule(int id)
         {
-            var roleModule = await _roleModuleRrpository.QueryAsync(o => o.RoleId == id);
+            var roleModule = await _roleModuleRepository.QueryAsync(o => o.RoleId == id);
             var modules = (await _moduleRepository.QueryAsync(o => o.IsLock == false)).OrderBy(o => o.Sort).ToList();
             var operations = _operationRepository.Entities.ToList();
             var json = from m in modules
-                       select new SetModuleOperationViewModel
+                       select new
                        {
                            Id = m.Id,
                            Name = m.Name,
-                           ParentId = m.ParentId == Guid.Empty ? null : m.ParentId.ToString(),
-                           Operations = GetRoleModuleOperation(m.Operations, roleModule, operations)
+                           _parentId = m.ParentId == Guid.Empty ? null : m.ParentId.ToString(),
+                           Operations = (from mo in m.Operations
+                                         join o in operations
+                                         on mo.OperationId equals o.Id
+                                         select new
+                                         {
+                                             Id = o.Id,
+                                             Name = o.Name,
+                                             IsCheck = roleModule.Where(u => u.ModuleId.Equals(m.Id) && u.OperationId == o.Id).Any()
+                                         })
+                       };
+            return Json(new
+            {
+                total = json.Count(),
+                rows = json
+            });
+        }
+        /// <summary>
+        /// 账号权限查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet, Route("getUserModule")]
+        public async Task<IHttpActionResult> GetUserModule(int id)
+        {
+            var userModule = await _userModuleRepository.QueryAsync(o => o.UserId == id);
+            var modules = (await _moduleRepository.QueryAsync(o => o.IsLock == false)).OrderBy(o => o.Sort).ToList();
+            var operations = _operationRepository.Entities.ToList();
+            var json = from m in modules
+                       select new
+                       {
+                           Id = m.Id,
+                           Name = m.Name,
+                           _parentId = m.ParentId == Guid.Empty ? null : m.ParentId.ToString(),
+                           Operations = (from mo in m.Operations
+                                         join o in operations
+                                         on mo.OperationId equals o.Id
+                                         select new
+                                         {
+                                             Id = o.Id,
+                                             Name = o.Name,
+                                             IsCheck = userModule.Where(u => u.ModuleId.Equals(m.Id) && u.OperationId == o.Id).Any()
+                                         }
+                                      )
                        };
             return Json(new
             {
@@ -151,9 +197,9 @@ namespace ZY.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost, Route("saveRoleModule")]
-        public async Task<IHttpActionResult> SaveModuleOperation(SaveModuleOperationViewModel model)
+        public async Task<IHttpActionResult> SaveRoleModuleOperation(SaveRoleModuleOperationViewModel model)
         {
-            var roleModule = await _roleModuleRrpository.QueryAsync(o => o.RoleId == model.Id);
+            var roleModule = await _roleModuleRepository.QueryAsync(o => o.RoleId == model.Id);
             var postRoleModule = new List<RoleModuleMap>();
             foreach (var m in model.Module)
             {
@@ -169,10 +215,89 @@ namespace ZY.WebApi.Controllers
             //删除
             var deleteRoleModule = roleModule.Except(postRoleModule, new RoleModuleEquality());
 
-            await _roleModuleRrpository.InsertAsync(addRoleModule);
-            _roleModuleRrpository.Remove(deleteRoleModule);
+            await _roleModuleRepository.InsertAsync(addRoleModule);
+            _roleModuleRepository.Remove(deleteRoleModule);
             await _unitOfWork.CommitAsync();
 
+            return Ok();
+        }
+        /// <summary>
+        /// 保存账号模块权限
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Route("saveUserModule")]
+        public async Task<IHttpActionResult> SaveUserModuleOperation(SaveUserModuleOperationViewModel model)
+        {
+            var userModule = await _userModuleRepository.QueryAsync(o => o.UserId == model.Id);
+            var postuUserModule = new List<UserModuleMap>();
+            foreach (var m in model.Module)
+            {
+                postuUserModule.Add(new UserModuleMap()
+                {
+                    UserId = model.Id,
+                    ModuleId = m.Id,
+                    OperationId = m.operation
+                });
+            }
+            //新增
+            var addUserModule = postuUserModule.Except(userModule, new UserModuleEquality());
+            //删除
+            var deleteUserModule = userModule.Except(postuUserModule, new UserModuleEquality());
+
+            await _userModuleRepository.InsertAsync(addUserModule);
+            _userModuleRepository.Remove(deleteUserModule);
+            await _unitOfWork.CommitAsync();
+
+            return Ok();
+        }
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost,Route("save")]
+        public async Task<IHttpActionResult> Save(SysModule model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidError();
+            }
+            var module = await _moduleRepository.GetByKeyAsync(model.Id);
+            if (module == null)
+            {
+                //添加
+                await _moduleRepository.InsertAsync(model);
+            }
+            else
+            {
+                module.Name = model.Name;
+                module.Code = model.Code;
+                module.Url = model.Url;
+                module.Icon = model.Icon;
+                module.IsLock = model.IsLock;
+                module.ParentId = model.ParentId;
+                module.Sort = model.Sort;
+                module.Remark = model.Remark;
+                //修改
+                await _moduleRepository.UpdateAsync(module);
+            }
+            await _unitOfWork.CommitAsync();
+            return Ok();
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Route("delete")]
+        public async Task<IHttpActionResult> Delete([FromBody]Guid id)
+        {
+            _userModuleRepository.Remove(o => o.ModuleId.Equals(id));
+            _roleModuleRepository.Remove(o => o.ModuleId.Equals(id));
+            _moduleOperationRepository.Remove(o => o.ModuleId.Equals(id));
+            _moduleRepository.Remove(id);
+            await _unitOfWork.CommitAsync();
             return Ok();
         }
 
@@ -194,6 +319,7 @@ namespace ZY.WebApi.Controllers
                 }
                 foreach (var model in query)
                 {
+                    if (!UserAuthorize.IsAuthorized(model.Code, OperationCode.Show)) continue; //判断权限
                     TreeNode child = new TreeNode()
                     {
                         Id = model.Id,
@@ -205,25 +331,6 @@ namespace ZY.WebApi.Controllers
                     this.GetTree(child, list, model.Id);
                 }
             }
-        }
-        /// <summary>
-        /// 获取角色也有菜单权限
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="roleModule"></param>
-        /// <param name="operations"></param>
-        /// <returns></returns>
-        private IList<OperationViewModel> GetRoleModuleOperation(ICollection<ModuleOperationMap> list, IList<RoleModuleMap> roleModule, IList<Operation> operations)
-        {
-            return (from m in list
-                    join o in operations
-                    on m.OperationId equals o.Id
-                    select new OperationViewModel
-                    {
-                        Id = o.Id,
-                        Name = o.Name,
-                        IsCheck = roleModule.Where(r => r.ModuleId == m.ModuleId && r.OperationId == m.OperationId).Any()
-                    }).ToList<OperationViewModel>();
         }
         #endregion
     }
